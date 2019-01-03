@@ -10,7 +10,13 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "apexcharts": "^2.5.1",
+    "bootstrap-vue": "^2.0.0-rc.11",
+    "firebase": "^5.7.2",
+    "fusioncharts": "^3.13.3-sr.1",
     "vue": "^2.5.2",
+    "vue-apexcharts": "^1.2.7",
+    "vue-fusioncharts": "^3.0.0",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
