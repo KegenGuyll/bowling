@@ -48,6 +48,11 @@ export default {
         },
         xaxis: {
           type: "datetime"
+        },
+        dataLabels: {
+          style: {
+            colors: ["#FFFFFF", "#FFFFFF", "#FFFFFF"]
+          }
         }
       },
       series: [
@@ -80,14 +85,10 @@ export default {
             }
           ]
         }
-      ],
-      tempDate: [],
-      tempScore: []
+      ]
     };
   },
   created() {
-    // {  },
-    //           { y: doc.data().Scores }
     const user = firebase.auth().currentUser;
     const uid = user.uid;
     var docRef = db.collection(uid).doc("Bgq0giMVQuLRHmntPrvC");
@@ -95,13 +96,20 @@ export default {
       .get()
       .then(doc => {
         if (doc.exists) {
-          console.log(doc.data().Dates);
-          doc.data().Dates.forEach(element => {
-            this.tempDate.push({ x: element });
-          });
-          doc.data().Scores.forEach(element => {
-            this.tempScore.push({ y: element });
-          });
+          console.log(doc.data());
+          // console.log(doc.data().Dates);
+          // doc.data().Dates.forEach(element => {
+          //   this.tempDate.push({ x: element });
+          // });
+          // doc.data().Scores.forEach(element => {
+          //   this.tempScore.push({ y: element });
+          // });
+          // this.series = [
+          //   {
+          //     data : doc.data()
+          //   }
+          // ];
+          //this.tempData.push({ name: "series 2" });
         } else {
           console.log("No such document!");
         }

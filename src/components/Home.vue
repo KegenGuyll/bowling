@@ -1,18 +1,32 @@
 <template>
   <div>
+    <InfoCard :cardTitle="cardTitle" :cardContent="cardContent" class="spacer"></InfoCard>
     <Graph class="spacer"></Graph>
   </div>
 </template>
 
 <script>
+import InfoCard from "./InfoCard";
 import Graph from "./Graph.vue";
 export default {
   name: "Home",
   data() {
-    return {};
+    return {
+      cardTitle: "",
+      cardContent: ""
+    };
   },
   components: {
-    Graph: Graph
+    Graph: Graph,
+    InfoCard: InfoCard
+  },
+  methods: {
+    createCard(option) {
+      if (option == "strike") {
+      }
+      if (option == "pins hit") {
+      }
+    }
   }
 };
 </script>
