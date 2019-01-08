@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Home from '@/components/Home'
+import Bowling from '../components/Bowling.vue'
 import firebase from "firebase";
 
 Vue.use(Router)
@@ -14,7 +15,16 @@ const routes = [{
     meta: {
       requiresAuth: true
     }
-  }, {
+  },
+  {
+    path: '/bowling',
+    name: 'bowling',
+    component: Bowling,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/login',
     name: 'login',
     component: Login,

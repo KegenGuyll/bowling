@@ -1,13 +1,18 @@
 <template>
   <div>
-    <b-navbar type="dark" variant="primary" toggleable>
+    <b-navbar style="background-color: #000000 !important" type="dark" variant="primary" toggleable>
       <b-navbar-toggle target="nav_dropdown_collapse"></b-navbar-toggle>
       <b-collapse is-nav id="nav_dropdown_collapse">
         <b-navbar-nav>
-          <b-nav-item>
+          <b-nav-item v-if="isLoggedIn == true">
             <router-link style="color: rgba(255, 255, 255, 0.5);" to="/">Dashboard</router-link>
           </b-nav-item>
-          <b-nav-item>Bowling</b-nav-item>
+          <b-nav-item v-if="isLoggedIn == false">
+            <router-link style="color: rgba(255, 255, 255, 0.5);" to="/register">Register</router-link>
+          </b-nav-item>
+          <b-nav-item v-if="isLoggedIn == true">
+            <router-link style="color: rgba(255, 255, 255, 0.5);" to="/bowling">Bowling</router-link>
+          </b-nav-item>
           <b-nav-item v-if="isLoggedIn" v-on:click="logout">Logout</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -44,3 +49,13 @@ export default {
   }
 };
 </script>
+
+<style>
+.bg-primary {
+  background-color: #000000 !important;
+}
+nav {
+  background-color: #000000;
+}
+</style>
+

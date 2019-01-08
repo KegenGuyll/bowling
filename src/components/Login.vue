@@ -70,9 +70,62 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .spacer {
   margin-top: 2vh;
   margin-bottom: 2vh;
+}
+.form-control::-webkit-input-placeholder {
+  color: rgb(36, 36, 36);
+} /* WebKit, Blink, Edge */
+.form-control:-moz-placeholder {
+  color: white;
+} /* Mozilla Firefox 4 to 18 */
+.form-control::-moz-placeholder {
+  color: white;
+} /* Mozilla Firefox 19+ */
+.form-control:-ms-input-placeholder {
+  color: white;
+} /* Internet Explorer 10-11 */
+.form-control::-ms-input-placeholder {
+  color: white;
+} /* Microsoft Edge */
+
+.form-control:focus {
+  color: #212121;
+  background-color: rgb(114, 114, 114);
+  border-color: #505050;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(31, 31, 31, 0.356);
+}
+
+.card {
+  background-color: #424242;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212121;
+  background-color: #424242;
+  background-clip: padding-box;
+  border: 1px solid #3b3b3b;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.card-title {
+  color: #000000;
+}
+
+.btn-secondary {
+  color: #fff;
+  background-color: #212121;
+  border-color: #212121;
 }
 </style>

@@ -1,38 +1,80 @@
 <template>
-  <div v-if="series[0].data != 0">
-    <apexchart type="area" :options="options" :series="series"></apexchart>
-  </div>
+  <b-container fluid>
+    <h3 style="color: #fff">Dashboard</h3>
+    <b-card style="background-color: #3e6aff;
+    color: #fff;" title="Total Pins Hit">
+      <h3 class="card-text">{{totalPin}}</h3>
+    </b-card>
+    <b-row>
+      <b-col>
+        <b-card
+          style="background-color: #fff; color: #000000;"
+          title="Change of Strike"
+          class="spacer"
+        >
+          <h5 class="card-text">{{strikes}}</h5>
+        </b-card>
+      </b-col>
+      <b-col>
+        <b-card
+          style="background-color: #fff; color: #000000;"
+          title="Average Score"
+          class="spacer"
+        >
+          <h6>{{average}}</h6>
+        </b-card>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-card title="High" style="background-color: #11d241;
+    color: white;">
+          <h5>{{high}}</h5>
+        </b-card>
+      </b-col>
+      <b-col>
+        <b-card title="Low" style="background-color: #f40;
+    color: white;">
+          <h5>{{low}}</h5>
+        </b-card>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-card style="background-color: #fff;" class="spacer">
+          <div>
+            <apexchart type="area" :options="options" :series="series"></apexchart>
+          </div>
+        </b-card>
+        <b-card style="background-color: #3e6aff;
+    color: #fff;" class="spacer" title="User">
+          <h5>{{user}}</h5>
+        </b-card>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 
 <script>
 import db from "../../firebaseInit.js";
 import firebase from "firebase";
+import VueApexCharts from "vue-apexcharts";
 export default {
   name: "Graph",
   data() {
     return {
+      data: [],
+      high: "N/A",
+      low: "N/A",
+      scores: [],
+      average: "N/A",
+      strikes: "N/A",
+      totalPin: "",
+      user: "",
       options: {
         chart: {
           id: "Bowling Scores",
-          toolbar: {
-            show: true,
-            tools: {
-              download: true,
-              selection: true,
-              zoom: true,
-              zoomin: true,
-              zoomout: true,
-              pan: true,
-              reset: true
-            },
-            autoSelected: "zoom"
-          },
-          animations: {
-            initialAnimation: {
-              enabled: false
-            }
-          },
           title: {
             text: "Bowling Scores",
             align: "left",
@@ -47,76 +89,57 @@ export default {
           }
         },
         xaxis: {
-          type: "datetime"
-        },
-        dataLabels: {
-          style: {
-            colors: ["#FFFFFF", "#FFFFFF", "#FFFFFF"]
-          }
+          categories: []
         }
       },
       series: [
         {
-          name: "Series 1",
-          data: [
-            {
-              x: "02-10-2017",
-              y: 34
-            },
-            {
-              x: "02-11-2017",
-              y: 43
-            },
-            {
-              x: "02/12/2017",
-              y: 31
-            },
-            {
-              x: "02/13/2017",
-              y: 43
-            },
-            {
-              x: "02-14-2017",
-              y: 33
-            },
-            {
-              x: "02-15-2017",
-              y: 52
-            }
-          ]
+          name: "1",
+          data: []
         }
       ]
     };
   },
   created() {
     const user = firebase.auth().currentUser;
+    this.user = user.email;
     const uid = user.uid;
-    var docRef = db.collection(uid).doc("Bgq0giMVQuLRHmntPrvC");
+    var docRef = db.collection(uid).doc("data");
     docRef
       .get()
       .then(doc => {
         if (doc.exists) {
-          console.log(doc.data());
-          // console.log(doc.data().Dates);
-          // doc.data().Dates.forEach(element => {
-          //   this.tempDate.push({ x: element });
-          // });
-          // doc.data().Scores.forEach(element => {
-          //   this.tempScore.push({ y: element });
-          // });
-          // this.series = [
-          //   {
-          //     data : doc.data()
-          //   }
-          // ];
-          //this.tempData.push({ name: "series 2" });
+          this.series = [
+            {
+              name: "Series 1",
+              data: doc.data().data
+            }
+          ];
+          this.categories = [doc.data().data];
+          this.data = doc.data().data;
         } else {
           console.log("No such document!");
         }
       })
+      .then(() => {
+        this.data.forEach(element => {
+          this.scores.push(element.y);
+        });
+      })
+      .then(() => {
+        this.high = Math.max.apply(null, this.scores);
+        this.low = Math.min.apply(null, this.scores);
+        this.totalPin = this.scores.reduce(this.getSum);
+        this.average = Math.round(this.totalPin / this.scores.length);
+      })
       .catch(error => {
         console.log("Error: ", error);
       });
+  },
+  methods: {
+    getSum(total, num) {
+      return total + num;
+    }
   }
 };
 </script>
