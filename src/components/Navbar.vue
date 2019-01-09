@@ -10,9 +10,6 @@
           <b-nav-item v-if="isLoggedIn == false">
             <router-link style="color: rgba(255, 255, 255, 0.5);" to="/register">Register</router-link>
           </b-nav-item>
-          <b-nav-item v-if="isLoggedIn == true">
-            <router-link style="color: rgba(255, 255, 255, 0.5);" to="/bowling">Bowling</router-link>
-          </b-nav-item>
           <b-nav-item v-if="isLoggedIn" v-on:click="logout">Logout</b-nav-item>
         </b-navbar-nav>
       </b-collapse>

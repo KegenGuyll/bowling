@@ -1,15 +1,19 @@
 <template>
   <b-container fluid>
-    <h3 style="color: #fff">Dashboard</h3>
+    <b-row>
+      <b-col>
+        <Score/>
+      </b-col>
+    </b-row>
     <b-card style="background-color: #3e6aff;
-    color: #fff;" title="Total Pins Hit">
+    color: #fff;" title="Total Score">
       <h3 class="card-text">{{totalPin}}</h3>
     </b-card>
     <b-row>
       <b-col>
         <b-card
           style="background-color: #fff; color: #000000;"
-          title="Change of Strike"
+          title="Chance of Strike"
           class="spacer"
         >
           <h5 class="card-text">{{strikes}}</h5>
@@ -52,16 +56,27 @@
         </b-card>
       </b-col>
     </b-row>
+    <b-row>
+      <b-col>
+        <Remove :data="data"></Remove>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
 
 <script>
+import Score from "./addScore";
+import Remove from "./removeScore";
 import db from "../../firebaseInit.js";
 import firebase from "firebase";
 import VueApexCharts from "vue-apexcharts";
 export default {
   name: "Graph",
+  components: {
+    Score,
+    Remove
+  },
   data() {
     return {
       data: [],
@@ -139,6 +154,43 @@ export default {
   methods: {
     getSum(total, num) {
       return total + num;
+    },
+    update() {
+      const user = firebase.auth().currentUser;
+      this.user = user.email;
+      const uid = user.uid;
+      var docRef = db.collection(uid).doc("data");
+      docRef
+        .get()
+        .then(doc => {
+          if (doc.exists) {
+            this.series = [
+              {
+                name: "Series 1",
+                data: doc.data().data
+              }
+            ];
+            this.categories = [doc.data().data];
+            this.data = doc.data().data;
+          } else {
+            console.log("No such document!");
+          }
+        })
+        .then(() => {
+          this.scores = [];
+          this.data.forEach(element => {
+            this.scores.push(element.y);
+          });
+        })
+        .then(() => {
+          this.high = Math.max.apply(null, this.scores);
+          this.low = Math.min.apply(null, this.scores);
+          this.totalPin = this.scores.reduce(this.getSum);
+          this.average = Math.round(this.totalPin / this.scores.length);
+        })
+        .catch(error => {
+          console.log("Error: ", error);
+        });
     }
   }
 };
