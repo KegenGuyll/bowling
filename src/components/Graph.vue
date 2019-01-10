@@ -116,9 +116,17 @@ export default {
     };
   },
   created() {
-    const user = firebase.auth().currentUser;
-    this.user = user.email;
+    var user = firebase.auth().currentUser;
+    var name, email, photoUrl, UID, emailVerified;
     const uid = user.uid;
+    if (user != null) {
+      name = user.displayName;
+      email = user.email;
+      photoUrl = user.photoURL;
+      UID = user.uid;
+    }
+
+    this.user = user.email;
     var docRef = db.collection(uid).doc("data");
     docRef
       .get()
@@ -146,6 +154,20 @@ export default {
         this.low = Math.min.apply(null, this.scores);
         this.totalPin = this.scores.reduce(this.getSum);
         this.average = Math.round(this.totalPin / this.scores.length);
+      })
+      .then(() => {
+        db.collection("users")
+          .doc(uid)
+          .set({
+            name: name,
+            email: email,
+            photoUrl: photoUrl,
+            uid: UID,
+            totalScore: this.totalPin,
+            average: this.average,
+            high: this.high,
+            low: this.low
+          });
       })
       .catch(error => {
         console.log("Error: ", error);

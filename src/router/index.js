@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Home from '@/components/Home'
+import Settings from '@/components/Settings'
 import firebase from "firebase";
 
 Vue.use(Router)
@@ -29,6 +30,14 @@ const routes = [{
     component: Register,
     meta: {
       requiresGuest: true
+    }
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: Settings,
+    meta: {
+      requiresAuth: true
     }
   }
 ]

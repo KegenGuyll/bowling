@@ -8,6 +8,8 @@
 <script>
 import InfoCard from "./InfoCard";
 import Graph from "./Graph.vue";
+import db from "../../firebaseInit.js";
+import firebase from "firebase";
 export default {
   name: "Home",
   data() {
@@ -20,14 +22,8 @@ export default {
     Graph: Graph,
     InfoCard: InfoCard
   },
-  methods: {
-    createCard(option) {
-      if (option == "strike") {
-      }
-      if (option == "pins hit") {
-      }
-    }
-  }
+  created() {},
+  methods: {}
 };
 </script>
 

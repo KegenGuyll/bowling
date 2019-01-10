@@ -4,8 +4,21 @@
       <b-navbar-toggle target="nav_dropdown_collapse"></b-navbar-toggle>
       <b-collapse is-nav id="nav_dropdown_collapse">
         <b-navbar-nav>
+          <b-nav-item v-if="displayName != null">
+            <b-img
+              rounded="circle"
+              width="30"
+              height="30"
+              v-if="photoUrl != ''"
+              v-bind:src="photoUrl"
+            />
+            <strong>Hello {{displayName}}</strong>
+          </b-nav-item>
           <b-nav-item v-if="isLoggedIn == true">
             <router-link style="color: rgba(255, 255, 255, 0.5);" to="/">Dashboard</router-link>
+          </b-nav-item>
+          <b-nav-item v-if="isLoggedIn == true">
+            <router-link style="color: rgba(255, 255, 255, 0.5);" to="/settings">Settings</router-link>
           </b-nav-item>
           <b-nav-item v-if="isLoggedIn == false">
             <router-link style="color: rgba(255, 255, 255, 0.5);" to="/register">Register</router-link>
@@ -25,13 +38,25 @@ export default {
   data() {
     return {
       isLoggedIn: false,
-      currentUser: false
+      currentUser: false,
+      displayName: "",
+      photoUrl: ""
     };
   },
   created() {
     if (firebase.auth().currentUser) {
       this.isLoggedIn = true;
       this.currentUser = firebase.auth().currentUser.email;
+    }
+    var user = firebase.auth().currentUser;
+    var name, email, photoUrl, uid, emailVerified;
+
+    if (user != null) {
+      this.displayName = user.displayName;
+      this.email = user.email;
+      this.photoUrl = user.photoURL;
+      this.emailVerified = user.emailVerified;
+      this.uid = user.uid;
     }
   },
   methods: {
