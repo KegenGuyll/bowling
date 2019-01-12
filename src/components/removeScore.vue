@@ -109,19 +109,25 @@ export default {
     remove(index, scores) {
       const user = firebase.auth().currentUser;
       const uid = user.uid;
-      db.collection(uid)
-        .where("datcontentID", "==", scores.contentID)
+      db.collection("score-data")
+        .where("data", "array-contains", {
+          contentID:scores.contentID,
+          x: scores.x,
+          y: scores.y
+          })
         .get()
         .then(querySnapshot => {
-          console.log(querySnapshot);
+          console.log(querySnapshot)
           querySnapshot.forEach(doc => {
-            doc.ref.delete();
-            this.data.splice(index, 1);
+            //doc.ref.delete();
+           //doc.data().data[index]
+          //this.data.splice(index, 1);
           });
         })
         .catch(e => {
           console.log(e);
         });
+
     }
   }
 };

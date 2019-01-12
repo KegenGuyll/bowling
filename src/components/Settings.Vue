@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="justify-content-md-center">
     <b-alert
       v-if="success == true"
       dismissible
@@ -9,14 +9,14 @@
     >{{successMessage}}</b-alert>
     <b-alert variant="danger" dismissible :show="error" @dismissed="error=false">{{errorMessage}}</b-alert>
     <b-container>
-      <b-card no-body>
+      <b-card style="margin-top: 5vh;" no-body>
         <b-tabs pills card>
           <b-tab title="Account" active>
             <b-list-group flush>
-              <b-list-group-item v-b-modal.displayName>Profile</b-list-group-item>
-              <b-list-group-item v-b-modal.Password>Password</b-list-group-item>
-              <b-list-group-item href="#">Scores</b-list-group-item>
-              <b-list-group-item v-b-modal.friends>Friends</b-list-group-item>
+              <b-list-group-item href="#" v-b-modal.displayName>Profile</b-list-group-item>
+              <b-list-group-item href="#" v-b-modal.Password>Password</b-list-group-item>
+              <b-list-group-item href="#" v-b-modal.scores>Scores</b-list-group-item>
+              <b-list-group-item href="#" v-b-modal.friends>Friends</b-list-group-item>
               <b-list-group-item>Private Account
                 <switches
                   style="float: right; margin-top:8px"
@@ -28,27 +28,32 @@
               <b-list-group-item href="#">Delete Account</b-list-group-item>
             </b-list-group>
           </b-tab>
-          <b-tab title="Tab 2">Tab Contents 2</b-tab>
         </b-tabs>
       </b-card>
       <div>
-        <b-modal @ok="CreatenewPassword" id="Password" title="Change your password">
+        <b-modal centered @ok="CreatenewPassword" id="Password" title="Change your password">
           <b-form>
             <b-form-input
-              class="spacer"
+              class="bottom-input"
               type="password"
               placeholder="Current Password"
               v-model="currentPassword"
             ></b-form-input>
-            <b-form-input type="password" placeholder="New Password" v-model="newPassword"></b-form-input>
             <b-form-input
+              class="bottom-input"
+              type="password"
+              placeholder="New Password"
+              v-model="newPassword"
+            ></b-form-input>
+            <b-form-input
+              class="bottom-input"
               type="password"
               placeholder=" Repeat New Password"
               v-model="repeatnewPassword"
             ></b-form-input>
           </b-form>
         </b-modal>
-        <b-modal @ok="updateUser" id="displayName" title="Update Profile">
+        <b-modal centered @ok="updateUser" id="displayName" title="Update Profile">
           <b-form>
             <b-list-group>
               <b-list-group-item>
@@ -90,10 +95,14 @@
             </b-list-group>
           </b-form>
         </b-modal>
-        <b-modal id="friends">
+        <b-modal centered id="friends">
           <b-form>
             <b-form-input type="text" placeholder="Seach by UID" v-model="search"></b-form-input>
-            <b-button v-on:click="searchUser">Search</b-button>
+            <div style="display: flex;flex-direction: row;">
+              <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                <b-button v-if="search != ''" class="float-right" v-on:click="searchUser">Search</b-button>
+              </div>
+            </div>
           </b-form>
           <b-card v-if="searchedUser.name">
             <h5 class="card-title">
@@ -104,6 +113,14 @@
             <p>Average Score: {{searchedUser.average}}</p>
             {{searchedUser.email}}
             {{searchedUser.uid}}
+            <b-button class="float-right">Add Friend</b-button>
+          </b-card>
+        </b-modal>
+        <b-modal centered id="scores">
+          <b-card v-for="score in scores" v-bind:key="score.contentID">
+            <h5 class="card-title">Scores</h5>
+            <p class="float-left">{{score.y}}</p>
+            <p class="float-right">{{score.x}}</p>
           </b-card>
         </b-modal>
       </div>
@@ -137,19 +154,28 @@ export default {
       successMessage: "",
       success: false,
       search: "",
-      searchedUser: []
+      searchedUser: [],
+      scores: []
     };
   },
   created() {
     var user = firebase.auth().currentUser;
-    var name, email, photoUrl, uid, emailVerified;
-
+    var name, email, photoUrl, emailVerified;
+    const uid = user.uid;
+    var docRef = db.collection("score-data").doc(uid);
+    docRef.get().then(doc => {
+      if (doc.exists) {
+        this.scores = doc.data().data;
+      } else {
+        console.log("No such document!");
+      }
+    });
     if (user != null) {
       this.displayName = user.displayName;
       this.email = user.email;
       this.photoURL = user.photoURL;
       this.emailVerified = user.emailVerified;
-      this.uid = user.uid;
+      this.uid = uid;
     }
 
     if (this.displayName == null) {
@@ -228,14 +254,18 @@ export default {
     searchUser() {
       var docRef = db.collection("users").doc(this.search);
 
-      docRef.get().then(doc => {
-        if (doc.exists) {
-          console.log(doc.data());
-          this.searchedUser = doc.data();
-        } else {
-          console.log("no such user");
-        }
-      });
+      docRef
+        .get()
+        .then(doc => {
+          if (doc.exists) {
+            this.searchedUser = doc.data();
+          } else {
+            console.log("no such user");
+          }
+        })
+        .then(() => {
+          this.search = "";
+        });
     }
   }
 };
@@ -245,5 +275,28 @@ export default {
 .spacer {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+</style>
+
+<style scoped>
+.bottom-input {
+  border-top-color: unset;
+  border-top-style: unset;
+  border-top-width: unset;
+  border-right-color: unset;
+  border-right-style: unset;
+  border-right-width: unset;
+  border-bottom-color: #ced4da;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-left-color: unset;
+  border-left-style: unset;
+  border-left-width: unset;
+}
+.form-control:focus {
+  color: #212121;
+  border-color: #ced4da;
+  outline: unset;
+  box-shadow: unset;
 }
 </style>

@@ -127,7 +127,7 @@ export default {
     }
 
     this.user = user.email;
-    var docRef = db.collection(uid).doc("data");
+    var docRef = db.collection("score-data").doc(uid);
     docRef
       .get()
       .then(doc => {
@@ -181,7 +181,7 @@ export default {
       const user = firebase.auth().currentUser;
       this.user = user.email;
       const uid = user.uid;
-      var docRef = db.collection(uid).doc("data");
+      var docRef = db.collection("score-data").doc(uid);
       docRef
         .get()
         .then(doc => {

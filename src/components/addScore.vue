@@ -96,46 +96,51 @@ export default {
       const user = firebase.auth().currentUser;
       const uid = user.uid;
       var d = new Date();
-      var userCheck = db.collection(uid);
       var formatedD = d.toLocaleDateString("en-US");
 
-      var docRef = db.collection(uid).doc("data");
+      var docRef = db.collection("score-data").doc(uid);
 
       docRef.get().then(doc => {
-        if (doc.exists) {
-          this.basicScore = Number(this.basicScore);
-          var addScore = db.collection(uid).doc("data");
-          this.temp = Math.floor(Math.random() * 1000000 + 1);
-          addScore
-            .update({
-              data: firebase.firestore.FieldValue.arrayUnion({
-                y: this.basicScore,
-                x: formatedD,
-                contentID: this.temp
-              })
-            })
-            .then(() => {
-              this.success = true;
-              this.update();
-            });
-        } else {
-          this.basicScore = Number(this.basicScore);
-          this.temp = Math.floor(Math.random() * 1000000 + 1);
-          db.collection(uid)
-            .doc("data")
-            .set({
-              data: [
-                {
+        if (this.basicScore < 300 && this.basicScore > 0) {
+          if (doc.exists) {
+            this.basicScore = Number(this.basicScore);
+            var addScore = db.collection("score-data").doc(uid);
+            this.temp = Math.floor(Math.random() * 1000000 + 1);
+            addScore
+              .update({
+                data: firebase.firestore.FieldValue.arrayUnion({
                   y: this.basicScore,
                   x: formatedD,
                   contentID: this.temp
-                }
-              ]
-            })
-            .then(() => {
-              this.success = true;
-              this.update();
-            });
+                })
+              })
+              .then(() => {
+                this.success = true;
+                this.update();
+              });
+          } else {
+            this.basicScore = Number(this.basicScore);
+            this.temp = Math.floor(Math.random() * 1000000 + 1);
+            db.collection("score-data")
+              .doc(uid)
+              .set({
+                data: [
+                  {
+                    y: this.basicScore,
+                    x: formatedD,
+                    contentID: this.temp
+                  }
+                ]
+              })
+              .then(() => {
+                this.success = true;
+                this.update();
+              });
+          }
+        } else {
+          this.error = true;
+          this.errorMessage = "You have entered a invaild number";
+          this.basicScore = "";
         }
       });
     },
