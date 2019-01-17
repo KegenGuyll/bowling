@@ -7,7 +7,7 @@
         <b-col col s="12" md="6">
           <div>
             <b-card class="spacer" title="Register">
-              <a slot="header">
+              <a class="float-right" slot="header">
                 <router-link to="/login">
                   <h6 class="mb-0">Login</h6>
                 </router-link>

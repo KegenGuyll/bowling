@@ -6,12 +6,14 @@
       <b-row class="justify-content-md-center">
         <b-col col s="12" md="6">
           <div>
-            <b-card class="spacer" title="Login">
-              <a slot="header">
+            <b-card class="spacer">
+              <h4 class="title-card">Login</h4>
+              <a class="float-right" slot="header">
                 <router-link to="/register">
                   <h6 class="mb-0">Register</h6>
                 </router-link>
               </a>
+
               <b-form @submit="login">
                 <b-form-input v-model="email" class="spacer" type="email" placeholder="Email"></b-form-input>
                 <b-form-input
@@ -75,21 +77,21 @@ export default {
   margin-top: 2vh;
   margin-bottom: 2vh;
 }
-.form-control::-webkit-input-placeholder {
+/* .form-control::-webkit-input-placeholder {
   color: rgb(36, 36, 36);
-} /* WebKit, Blink, Edge */
+}
 .form-control:-moz-placeholder {
   color: white;
-} /* Mozilla Firefox 4 to 18 */
+}
 .form-control::-moz-placeholder {
   color: white;
-} /* Mozilla Firefox 19+ */
+}
 .form-control:-ms-input-placeholder {
   color: white;
-} /* Internet Explorer 10-11 */
+}
 .form-control::-ms-input-placeholder {
   color: white;
-} /* Microsoft Edge */
+}
 
 .form-control:focus {
   color: #212121;
@@ -97,9 +99,9 @@ export default {
   border-color: #505050;
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(31, 31, 31, 0.356);
-}
+} */
 
-.card {
+/* .card {
   background-color: #424242;
 }
 
@@ -127,5 +129,5 @@ export default {
   color: #fff;
   background-color: #212121;
   border-color: #212121;
-}
+} */
 </style>
