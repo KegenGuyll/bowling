@@ -4,7 +4,7 @@
       <b-navbar-toggle target="nav_dropdown_collapse"></b-navbar-toggle>
       <b-collapse is-nav id="nav_dropdown_collapse">
         <b-navbar-nav>
-          <b-nav-item v-if="displayName != null">
+          <b-nav-item v-if="displayName != null && isLoggedIn == true">
             <b-img
               rounded="circle"
               width="30"
@@ -19,6 +19,9 @@
           </b-nav-item>
           <b-nav-item v-if="isLoggedIn == true">
             <router-link style="color: rgba(255, 255, 255, 0.5);" to="/settings">Settings</router-link>
+          </b-nav-item>
+          <b-nav-item v-if="isLoggedIn == false">
+            <router-link style="color: rgba(255, 255, 255, 0.5);" to="/login">Login</router-link>
           </b-nav-item>
           <b-nav-item v-if="isLoggedIn == false">
             <router-link style="color: rgba(255, 255, 255, 0.5);" to="/register">Register</router-link>
