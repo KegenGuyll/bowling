@@ -36,20 +36,24 @@
             <b-form-input
               class="bottom-input"
               type="password"
+              required
               placeholder="Current Password"
               v-model="currentPassword"
             ></b-form-input>
             <b-form-input
               class="bottom-input"
               type="password"
+              required
               placeholder="New Password"
               v-model="newPassword"
             ></b-form-input>
             <b-form-input
               class="bottom-input"
               type="password"
+              required
               placeholder=" Repeat New Password"
               v-model="repeatnewPassword"
+              id="invaildPassword"
             ></b-form-input>
           </b-form>
         </b-modal>
@@ -218,6 +222,7 @@ export default {
           .then(() => {
             this.newPassword = "";
             this.currentPassword = "";
+            this.repeatnewPassword = "";
           })
           .catch(e => {
             this.error = true;
@@ -258,6 +263,7 @@ export default {
           this.errorMessage = error.message;
           this.newPassword = "";
           this.currentPassword = "";
+          this.repeatnewPassword = "";
         });
     },
     searchUser() {
