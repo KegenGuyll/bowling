@@ -56,13 +56,7 @@
         </b-button>
       </b-card>
       <b-modal id="remove" centered title="Remove">
-        <b-card
-          title="Remove Score"
-          bg-variant="dark"
-          text-variant="white"
-          v-for="(scores, index) in data"
-          v-bind:key="index"
-        >
+        <b-card title="Remove Score" v-for="(scores, index) in data" v-bind:key="index">
           <h5>{{scores.y}}</h5>
           <h6>{{scores.x}}</h6>
           {{scores.contentID}}
@@ -71,7 +65,7 @@
             style="width:100%; background-color: rgb(204, 12, 12); border-color:rgb(204, 12, 12);"
             v-b-modal.remove
           >
-            <h6>Delete</h6>
+            <h6 style="color: white;">Delete</h6>
           </b-button>
         </b-card>
       </b-modal>
@@ -111,23 +105,22 @@ export default {
       const uid = user.uid;
       db.collection("score-data")
         .where("data", "array-contains", {
-          contentID:scores.contentID,
+          contentID: scores.contentID,
           x: scores.x,
           y: scores.y
-          })
+        })
         .get()
         .then(querySnapshot => {
-          console.log(querySnapshot)
+          console.log(querySnapshot);
           querySnapshot.forEach(doc => {
             //doc.ref.delete();
-           //doc.data().data[index]
-          //this.data.splice(index, 1);
+            //doc.data().data[index]
+            //this.data.splice(index, 1);
           });
         })
         .catch(e => {
           console.log(e);
         });
-
     }
   }
 };
