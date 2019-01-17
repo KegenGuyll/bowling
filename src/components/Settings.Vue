@@ -55,6 +55,10 @@
               v-model="repeatnewPassword"
               id="invaildPassword"
             ></b-form-input>
+            <a
+              style="color: #007bff;text-decoration: none;background-color: transparent;"
+              v-on:click="resetPassword"
+            >Forgot password?</a>
           </b-form>
         </b-modal>
         <b-modal centered @ok="updateUser" id="displayName" title="Update Profile">
@@ -280,6 +284,17 @@ export default {
         })
         .then(() => {
           this.search = "";
+        });
+    },
+    resetPassword() {
+      firebase
+        .auth()
+        .sendPasswordResetEmail(this.email)
+        .then(() => {
+          alert("Password Reset Email Sent!");
+        })
+        .catch(e => {
+          alert(e.message);
         });
     }
   }
