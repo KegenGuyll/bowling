@@ -6,8 +6,8 @@ import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import firebase from 'firebase'
 import VueApexCharts from 'vue-apexcharts'
-Vue.use(VueApexCharts)
 
+Vue.use(VueApexCharts)
 Vue.component('apexchart', VueApexCharts)
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false

@@ -89,7 +89,19 @@
               <b-list-group-item v-b-toggle.collapse3>
                 <h6>UID ...</h6>
                 <b-collapse id="collapse3">
-                  <b-form-input disabled type="text" placeholder="UID" v-model="uid"></b-form-input>
+                  <div style="display: flex;flex-direction: column;">
+                    <div
+                      style="display: flex; flex-direction: row; justify-content: space-between;"
+                    >
+                      <b-form-input
+                        class="float-left"
+                        disabled
+                        type="text"
+                        placeholder="UID"
+                        v-model="uid"
+                      ></b-form-input>
+                    </div>
+                  </div>
                 </b-collapse>
               </b-list-group-item>
             </b-list-group>
@@ -215,7 +227,6 @@ export default {
     },
     updateUser() {
       var user = firebase.auth().currentUser;
-
       user
         .updateProfile({
           displayName: this.displayName,
@@ -234,9 +245,7 @@ export default {
         user.email,
         this.currentPassword
       );
-
       // Prompt the user to re-provide their sign-in credentials
-
       user
         .reauthenticateAndRetrieveDataWithCredential(credential)
         .then(() => {

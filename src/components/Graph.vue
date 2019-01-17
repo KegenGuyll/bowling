@@ -125,53 +125,7 @@ export default {
       photoUrl = user.photoURL;
       UID = user.uid;
     }
-
-    this.user = user.email;
-    var docRef = db.collection("score-data").doc(uid);
-    docRef
-      .get()
-      .then(doc => {
-        if (doc.exists) {
-          this.series = [
-            {
-              name: "Series 1",
-              data: doc.data().data
-            }
-          ];
-          this.categories = [doc.data().data];
-          this.data = doc.data().data;
-        } else {
-          console.log("No such document!");
-        }
-      })
-      .then(() => {
-        this.data.forEach(element => {
-          this.scores.push(element.y);
-        });
-      })
-      .then(() => {
-        this.high = Math.max.apply(null, this.scores);
-        this.low = Math.min.apply(null, this.scores);
-        this.totalPin = this.scores.reduce(this.getSum);
-        this.average = Math.round(this.totalPin / this.scores.length);
-      })
-      .then(() => {
-        db.collection("users")
-          .doc(uid)
-          .set({
-            name: name,
-            email: email,
-            photoUrl: photoUrl,
-            uid: UID,
-            totalScore: this.totalPin,
-            average: this.average,
-            high: this.high,
-            low: this.low
-          });
-      })
-      .catch(error => {
-        console.log("Error: ", error);
-      });
+    this.update();
   },
   methods: {
     getSum(total, num) {
