@@ -51,7 +51,7 @@
               class="bottom-input"
               type="password"
               required
-              placeholder=" Repeat New Password"
+              placeholder="Repeat New Password"
               v-model="repeatnewPassword"
               id="invaildPassword"
             ></b-form-input>
@@ -308,7 +308,7 @@ export default {
 }
 </style>
 
-<style scoped>
+<style>
 .bottom-input {
   border-top-color: unset;
   border-top-style: unset;
