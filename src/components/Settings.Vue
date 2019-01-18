@@ -19,6 +19,7 @@
               <b-list-group-item href="#" v-b-modal.friends>Friends</b-list-group-item>
               <b-list-group-item>Private Account
                 <switches
+                  v-if="enabled != null"
                   style="float: right; margin-top:8px"
                   theme="bootstrap"
                   color="primary"
@@ -160,7 +161,7 @@ export default {
   },
   data() {
     return {
-      enabled: false,
+      enabled: null,
       newPassword: "",
       repeatnewPassword: "",
       currentPassword: "",
@@ -178,14 +179,31 @@ export default {
       scores: []
     };
   },
+  watch: {
+    enabled() {
+      db.collection("users")
+        .doc(this.uid)
+        .update({
+          private: this.enabled
+        });
+    }
+  },
   created() {
     var user = firebase.auth().currentUser;
     var name, email, photoUrl, emailVerified;
     const uid = user.uid;
     var docRef = db.collection("score-data").doc(uid);
+    var docRefUser = db.collection("users").doc(uid);
     docRef.get().then(doc => {
       if (doc.exists) {
         this.scores = doc.data().data;
+      } else {
+        console.log("No such document!");
+      }
+    });
+    docRefUser.get().then(doc => {
+      if (doc.exists) {
+        this.enabled = doc.data().private;
       } else {
         console.log("No such document!");
       }
@@ -197,7 +215,6 @@ export default {
       this.emailVerified = user.emailVerified;
       this.uid = uid;
     }
-
     if (this.displayName == null) {
       this.displayName = "";
     }
@@ -239,7 +256,8 @@ export default {
       user
         .updateProfile({
           displayName: this.displayName,
-          photoURL: this.photoURL
+          photoURL: this.photoURL,
+          private: this.enabled
         })
         .then(() => {
           success = true;
@@ -272,12 +290,16 @@ export default {
     },
     searchUser() {
       var docRef = db.collection("users").doc(this.search);
-
       docRef
         .get()
         .then(doc => {
           if (doc.exists) {
-            this.searchedUser = doc.data();
+            if (doc.data().private == false) {
+              this.searchedUser = doc.data();
+            } else {
+              this.error = true;
+              this.errorMessage = "User has a private account";
+            }
           } else {
             console.log("no such user");
           }
@@ -295,6 +317,13 @@ export default {
         })
         .catch(e => {
           alert(e.message);
+        });
+    },
+    setPrivate() {
+      db.collection("users")
+        .doc(this.uid)
+        .update({
+          private: this.enabled
         });
     }
   }
