@@ -171,7 +171,7 @@ export default {
         .then(() => {
           db.collection("users")
             .doc(uid)
-            .set({
+            .update({
               name: this.name,
               email: this.email,
               photoUrl: this.photoUrl,

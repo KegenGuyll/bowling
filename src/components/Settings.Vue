@@ -19,7 +19,6 @@
               <b-list-group-item href="#" v-b-modal.friends>Friends</b-list-group-item>
               <b-list-group-item>Private Account
                 <switches
-                  v-if="enabled != null"
                   style="float: right; margin-top:8px"
                   theme="bootstrap"
                   color="primary"
@@ -161,7 +160,7 @@ export default {
   },
   data() {
     return {
-      enabled: null,
+      enabled: false,
       newPassword: "",
       repeatnewPassword: "",
       currentPassword: "",
@@ -317,13 +316,6 @@ export default {
         })
         .catch(e => {
           alert(e.message);
-        });
-    },
-    setPrivate() {
-      db.collection("users")
-        .doc(this.uid)
-        .update({
-          private: this.enabled
         });
     }
   }
