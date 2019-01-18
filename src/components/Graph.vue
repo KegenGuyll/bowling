@@ -85,8 +85,12 @@ export default {
       scores: [],
       average: "N/A",
       strikes: "N/A",
-      totalPin: "",
-      user: "",
+      totalPin: "N/A",
+      user: "N/A",
+      name: "",
+      email: "",
+      photoUrl: "",
+      UID: "",
       options: {
         chart: {
           id: "Bowling Scores",
@@ -120,10 +124,10 @@ export default {
     var name, email, photoUrl, UID, emailVerified;
     const uid = user.uid;
     if (user != null) {
-      name = user.displayName;
-      email = user.email;
-      photoUrl = user.photoURL;
-      UID = user.uid;
+      this.name = user.displayName;
+      this.email = user.email;
+      this.photoUrl = user.photoURL;
+      this.UID = user.uid;
     }
     this.update();
   },
@@ -163,6 +167,20 @@ export default {
           this.low = Math.min.apply(null, this.scores);
           this.totalPin = this.scores.reduce(this.getSum);
           this.average = Math.round(this.totalPin / this.scores.length);
+        })
+        .then(() => {
+          db.collection("users")
+            .doc(uid)
+            .set({
+              name: this.name,
+              email: this.email,
+              photoUrl: this.photoUrl,
+              uid: this.UID,
+              totalScore: this.totalPin,
+              average: this.average,
+              high: this.high,
+              low: this.low
+            });
         })
         .catch(error => {
           console.log("Error: ", error);
