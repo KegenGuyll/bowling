@@ -109,6 +109,7 @@
                         v-model="uid"
                       ></b-form-input>
                     </div>
+                    <qrcode-vue :value="uid" :size="size" level="H"></qrcode-vue>
                   </div>
                 </b-collapse>
               </b-list-group-item>
@@ -116,14 +117,13 @@
           </b-form>
         </b-modal>
         <b-modal centered id="friends">
-          <b-form>
+          <b-input-group>
             <b-form-input type="text" placeholder="Seach by UID" v-model="search"></b-form-input>
-            <div style="display: flex;flex-direction: row;">
-              <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                <b-button v-if="search != ''" class="float-right" v-on:click="searchUser">Search</b-button>
-              </div>
-            </div>
-          </b-form>
+            <b-input-group-append>
+              <b-btn variant="outline-success" v-b-modal.Camera>Camera</b-btn>
+              <b-button v-if="search != ''" variant="outline-success" v-on:click="searchUser">Search</b-button>
+            </b-input-group-append>
+          </b-input-group>
           <b-card v-if="searchedUser.name">
             <h5 class="card-title">
               {{searchedUser.name}}
@@ -143,6 +143,17 @@
             <p class="float-right">{{score.x}}</p>
           </b-card>
         </b-modal>
+        <b-modal centered id="Camera">
+          <b-card>
+            <div>
+              <p class="decode-result">
+                Last result:
+                <b>{{ result }}</b>
+              </p>
+              <qrcode-stream @decode="onDecode" @init="onInit"/>
+            </div>
+          </b-card>
+        </b-modal>
       </div>
     </b-container>
   </div>
@@ -152,11 +163,17 @@
 <script>
 import Switches from "vue-switches";
 import firebase from "firebase";
+import QrcodeVue from "qrcode.vue";
+import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
 import db from "../../firebaseInit.js";
 export default {
   name: "settings",
   components: {
-    Switches
+    Switches,
+    QrcodeVue,
+    QrcodeStream,
+    QrcodeDropZone,
+    QrcodeCapture
   },
   data() {
     return {
@@ -175,7 +192,9 @@ export default {
       success: false,
       search: "",
       searchedUser: [],
-      scores: []
+      scores: [],
+      size: 100,
+      result: ""
     };
   },
   watch: {
@@ -287,25 +306,46 @@ export default {
           this.repeatnewPassword = "";
         });
     },
-    searchUser() {
-      var docRef = db.collection("users").doc(this.search);
-      docRef
-        .get()
-        .then(doc => {
-          if (doc.exists) {
-            if (doc.data().private == false) {
-              this.searchedUser = doc.data();
+    searchUser(scan) {
+      if (scan) {
+        var docRef = db.collection("users").doc(scan);
+        docRef
+          .get()
+          .then(doc => {
+            if (doc.exists) {
+              if (doc.data().private == false) {
+                this.searchedUser = doc.data();
+              } else {
+                this.error = true;
+                this.errorMessage = "User has a private account";
+              }
             } else {
-              this.error = true;
-              this.errorMessage = "User has a private account";
+              console.log("no such user");
             }
-          } else {
-            console.log("no such user");
-          }
-        })
-        .then(() => {
-          this.search = "";
-        });
+          })
+          .then(() => {
+            this.search = "";
+          });
+      } else {
+        var docRef = db.collection("users").doc(this.search);
+        docRef
+          .get()
+          .then(doc => {
+            if (doc.exists) {
+              if (doc.data().private == false) {
+                this.searchedUser = doc.data();
+              } else {
+                this.error = true;
+                this.errorMessage = "User has a private account";
+              }
+            } else {
+              console.log("no such user");
+            }
+          })
+          .then(() => {
+            this.search = "";
+          });
+      }
     },
     resetPassword() {
       firebase
@@ -317,6 +357,33 @@ export default {
         .catch(e => {
           alert(e.message);
         });
+    },
+    onDecode(result) {
+      this.result = result;
+      this.searchUser(result);
+    },
+
+    async onInit(promise) {
+      try {
+        await promise;
+      } catch (error) {
+        if (error.name === "NotAllowedError") {
+          this.errorMessage =
+            "ERROR: you need to grant camera access permisson";
+        } else if (error.name === "NotFoundError") {
+          this.errorMessage = "ERROR: no camera on this device";
+        } else if (error.name === "NotSupportedError") {
+          this.errorMessage =
+            "ERROR: secure context required (HTTPS, localhost)";
+        } else if (error.name === "NotReadableError") {
+          this.errorMessage = "ERROR: is the camera already in use?";
+        } else if (error.name === "OverconstrainedError") {
+          this.error = "ERROR: installed cameras are not suitable";
+        } else if (error.name === "StreamApiNotSupportedError") {
+          this.errorMessage =
+            "ERROR: Stream API is not supported in this browser";
+        }
+      }
     }
   }
 };
@@ -326,6 +393,10 @@ export default {
 .spacer {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+.error {
+  font-weight: bold;
+  color: red;
 }
 </style>
 
