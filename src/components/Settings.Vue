@@ -14,7 +14,7 @@
           <b-tab title="Account" active>
             <b-list-group flush>
               <b-list-group-item to="settings/profile">Profile</b-list-group-item>
-              <b-list-group-item href="#" v-b-modal.Password>Password</b-list-group-item>
+              <b-list-group-item to="settings/password" v-b-modal.Password>Password</b-list-group-item>
               <b-list-group-item href="#" v-b-modal.scores>Scores</b-list-group-item>
               <b-list-group-item href="#" v-b-modal.friends>Friends</b-list-group-item>
               <b-list-group-item>Private Account
@@ -59,61 +59,6 @@
               style="color: #007bff;text-decoration: none;background-color: transparent;"
               v-on:click="resetPassword"
             >Forgot password?</a>
-          </b-form>
-        </b-modal>
-        <b-modal centered @ok="updateUser" id="displayName" title="Update Profile">
-          <b-form>
-            <b-list-group>
-              <b-list-group-item>
-                <div style="display: flex;flex-direction: column;">
-                  <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                    <h6 class="float-left">Display Name: {{displayName}}</h6>
-                    <b-img
-                      class="float-right"
-                      v-b-toggle.collapse1
-                      src="https://img.icons8.com/ios-glyphs/30/000000/pencil.png"
-                    ></b-img>
-                  </div>
-                </div>
-                <b-collapse id="collapse1">
-                  <b-form-input type="text" placeholder="Display Name" v-model="displayName"></b-form-input>
-                </b-collapse>
-              </b-list-group-item>
-              <b-list-group-item>
-                <div style="display: flex;flex-direction: column;">
-                  <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                    <h6 class="float-left">PhotoUrl ...</h6>
-                    <b-img
-                      class="float-right"
-                      v-b-toggle.collapse2
-                      src="https://img.icons8.com/ios-glyphs/30/000000/pencil.png"
-                    ></b-img>
-                  </div>
-                </div>
-                <b-collapse id="collapse2">
-                  <b-form-input type="text" placeholder="Photo Url" v-model="photoURL"></b-form-input>
-                </b-collapse>
-              </b-list-group-item>
-              <b-list-group-item v-b-toggle.collapse3>
-                <h6>UID ...</h6>
-                <b-collapse id="collapse3">
-                  <div style="display: flex;flex-direction: column;">
-                    <div
-                      style="display: flex; flex-direction: row; justify-content: space-between;"
-                    >
-                      <b-form-input
-                        class="float-left"
-                        disabled
-                        type="text"
-                        placeholder="UID"
-                        v-model="uid"
-                      ></b-form-input>
-                    </div>
-                    <qrcode-vue :value="uid" :size="size" level="H"></qrcode-vue>
-                  </div>
-                </b-collapse>
-              </b-list-group-item>
-            </b-list-group>
           </b-form>
         </b-modal>
         <b-modal centered id="friends">
@@ -390,35 +335,8 @@ export default {
 </script>
 
 <style>
-.spacer {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
 .error {
   font-weight: bold;
   color: red;
-}
-</style>
-
-<style>
-.bottom-input {
-  border-top-color: unset;
-  border-top-style: unset;
-  border-top-width: unset;
-  border-right-color: unset;
-  border-right-style: unset;
-  border-right-width: unset;
-  border-bottom-color: #ced4da;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-left-color: unset;
-  border-left-style: unset;
-  border-left-width: unset;
-}
-.form-control:focus {
-  color: #212121;
-  border-color: #ced4da;
-  outline: unset;
-  box-shadow: unset;
 }
 </style>
