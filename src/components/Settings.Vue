@@ -13,7 +13,7 @@
         <b-tabs pills card>
           <b-tab title="Account" active>
             <b-list-group flush>
-              <b-list-group-item href="#" v-b-modal.displayName>Profile</b-list-group-item>
+              <b-list-group-item to="settings/profile">Profile</b-list-group-item>
               <b-list-group-item href="#" v-b-modal.Password>Password</b-list-group-item>
               <b-list-group-item href="#" v-b-modal.scores>Scores</b-list-group-item>
               <b-list-group-item href="#" v-b-modal.friends>Friends</b-list-group-item>
@@ -216,7 +216,7 @@ export default {
       if (doc.exists) {
         this.scores = doc.data().data;
       } else {
-        console.log("No such document!");
+        console.log("You have no score");
       }
     });
     docRefUser.get().then(doc => {
