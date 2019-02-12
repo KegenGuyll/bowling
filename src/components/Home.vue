@@ -8,6 +8,7 @@
 <script>
 import InfoCard from "./InfoCard";
 import Graph from "./Graph.vue";
+import backarrow from "../components/Settings_group/Backarrow";
 import db from "../../firebaseInit.js";
 import firebase from "firebase";
 export default {
@@ -20,7 +21,8 @@ export default {
   },
   components: {
     Graph: Graph,
-    InfoCard: InfoCard
+    InfoCard: InfoCard,
+    backarrow
   },
   created() {},
   methods: {}

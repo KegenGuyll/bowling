@@ -15,7 +15,7 @@
             <b-list-group flush>
               <b-list-group-item to="settings/profile">Profile</b-list-group-item>
               <b-list-group-item to="settings/password" v-b-modal.Password>Password</b-list-group-item>
-              <b-list-group-item href="#" v-b-modal.scores>Scores</b-list-group-item>
+              <b-list-group-item to="settings/score">Scores</b-list-group-item>
               <b-list-group-item href="#" v-b-modal.friends>Friends</b-list-group-item>
               <b-list-group-item>Private Account
                 <switches
@@ -31,36 +31,6 @@
         </b-tabs>
       </b-card>
       <div>
-        <b-modal centered @ok="CreatenewPassword" id="Password" title="Change your password">
-          <b-form>
-            <b-form-input
-              class="bottom-input"
-              type="password"
-              required
-              placeholder="Current Password"
-              v-model="currentPassword"
-            ></b-form-input>
-            <b-form-input
-              class="bottom-input"
-              type="password"
-              required
-              placeholder="New Password"
-              v-model="newPassword"
-            ></b-form-input>
-            <b-form-input
-              class="bottom-input"
-              type="password"
-              required
-              placeholder="Repeat New Password"
-              v-model="repeatnewPassword"
-              id="invaildPassword"
-            ></b-form-input>
-            <a
-              style="color: #007bff;text-decoration: none;background-color: transparent;"
-              v-on:click="resetPassword"
-            >Forgot password?</a>
-          </b-form>
-        </b-modal>
         <b-modal centered id="friends">
           <b-input-group>
             <b-form-input type="text" placeholder="Seach by UID" v-model="search"></b-form-input>
@@ -79,13 +49,6 @@
             {{searchedUser.email}}
             {{searchedUser.uid}}
             <b-button class="float-right">Add Friend</b-button>
-          </b-card>
-        </b-modal>
-        <b-modal centered id="scores">
-          <b-card v-for="score in scores" v-bind:key="score.contentID">
-            <h5 class="card-title">Scores</h5>
-            <p class="float-left">{{score.y}}</p>
-            <p class="float-right">{{score.x}}</p>
           </b-card>
         </b-modal>
         <b-modal centered id="Camera">
@@ -109,6 +72,7 @@
 import Switches from "vue-switches";
 import firebase from "firebase";
 import QrcodeVue from "qrcode.vue";
+import backarrow from "../components/Settings_group/Backarrow.vue";
 import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
 import db from "../../firebaseInit.js";
 export default {
@@ -118,7 +82,8 @@ export default {
     QrcodeVue,
     QrcodeStream,
     QrcodeDropZone,
-    QrcodeCapture
+    QrcodeCapture,
+    backarrow
   },
   data() {
     return {

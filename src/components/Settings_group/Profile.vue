@@ -1,7 +1,6 @@
 <template>
   <div>
     <backarrow/>
-    <br>
     <b-alert
       :show="dismissCountDown"
       dismissible
@@ -9,6 +8,7 @@
       @dismissed="dismissCountDown=0"
       @dismiss-count-down="countDownChanged"
     >Profile Updated Successfully.</b-alert>
+    <br>
     <b-container>
       <div>
         <b-card header-tag="header" footer="Card Footer">
@@ -34,6 +34,7 @@
               </b-col>
               <b-col sm="9">
                 <b-form-input
+                  disabled
                   id="email"
                   v-model="email"
                   type="email"
@@ -109,7 +110,7 @@ export default {
       user
         .updateProfile({
           displayName: this.displayName,
-          photoURL: this.photoURL
+          photoURL: this.photoUrl
         })
         .then(() => {
           this.showAlert();
@@ -127,3 +128,4 @@ export default {
   }
 };
 </script>
+

@@ -4,6 +4,7 @@ import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Home from '@/components/Home'
 import Settings from '@/components/Settings'
+import Score from '../components/Settings_group/Scores.vue'
 import Profile from '../components/Settings_group/Profile.vue'
 import Password from '../components/Settings_group/Password.vue'
 import firebase from "firebase";
@@ -54,6 +55,14 @@ const routes = [{
     path: '/settings/password',
     name: 'password',
     component: Password,
+    meta: {
+      requiresAuth: true
+    },
+  },
+  {
+    path: '/settings/score',
+    name: 'score',
+    component: Score,
     meta: {
       requiresAuth: true
     }
