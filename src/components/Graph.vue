@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <b-container>
     <b-row>
       <b-col>
         <Score/>
@@ -13,19 +13,10 @@
       <b-col>
         <b-card
           style="background-color: #fff; color: #000000;"
-          title="Chance of Strike"
-          class="spacer"
-        >
-          <h5 class="card-text">{{strikes}}</h5>
-        </b-card>
-      </b-col>
-      <b-col>
-        <b-card
-          style="background-color: #fff; color: #000000;"
           title="Average Score"
           class="spacer"
         >
-          <h6>{{average}}</h6>
+          <h3>{{average}}</h3>
         </b-card>
       </b-col>
     </b-row>
@@ -85,8 +76,12 @@ export default {
       scores: [],
       average: "N/A",
       strikes: "N/A",
-      totalPin: "",
-      user: "",
+      totalPin: "N/A",
+      user: "N/A",
+      name: "N/A",
+      email: "N/A",
+      photoUrl: "",
+      UID: "",
       options: {
         chart: {
           id: "Bowling Scores",
@@ -120,10 +115,10 @@ export default {
     var name, email, photoUrl, UID, emailVerified;
     const uid = user.uid;
     if (user != null) {
-      name = user.displayName;
-      email = user.email;
-      photoUrl = user.photoURL;
-      UID = user.uid;
+      this.name = user.displayName;
+      this.email = user.email;
+      this.photoUrl = user.photoURL;
+      this.UID = user.uid;
     }
     this.update();
   },
@@ -163,6 +158,20 @@ export default {
           this.low = Math.min.apply(null, this.scores);
           this.totalPin = this.scores.reduce(this.getSum);
           this.average = Math.round(this.totalPin / this.scores.length);
+        })
+        .then(() => {
+          db.collection("users")
+            .doc(uid)
+            .update({
+              name: this.name,
+              email: this.email,
+              photoUrl: this.photoUrl,
+              uid: this.UID,
+              totalScore: this.totalPin,
+              average: this.average,
+              high: this.high,
+              low: this.low
+            });
         })
         .catch(error => {
           console.log("Error: ", error);

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <br>
     <b-alert
       dismissible
       :show="success"
@@ -11,7 +12,7 @@
       <b-row class="justify-content-md-center">
         <b-col col s="12" md="6">
           <div>
-            <b-card class="spacer">
+            <b-card>
               <h4 class="title-card">Login</h4>
               <a class="float-right" slot="header">
                 <router-link to="/register">
@@ -19,18 +20,14 @@
                 </router-link>
               </a>
               <b-form @submit="login">
-                <b-form-input v-model="email" class="spacer" type="email" placeholder="Email"></b-form-input>
-                <b-form-input
-                  v-model="password"
-                  class="spacer"
-                  type="password"
-                  placeholder="Password"
-                ></b-form-input>
-                <div v-if="email && password">
-                  <b-button type="submit">Login</b-button>
+                <input v-model="email" class="spacer" type="text" placeholder="Email">
+                <input v-model="password" class="spacer" type="password" placeholder="Password">
+                <div>
+                  <input type="submit" value="Login">
                 </div>
+                <br>
                 <a
-                  style="color: #007bff;text-decoration: none;background-color: transparent;"
+                  style="color: #2979ff;text-decoration: none;background-color: transparent;"
                   v-b-modal.resetP
                 >Forgot Password?</a>
               </b-form>
@@ -109,8 +106,56 @@ export default {
 </script>
 
 <style scoped>
-.spacer {
-  margin-top: 2vh;
-  margin-bottom: 2vh;
+.card {
+  background: #222527;
+  text-align: center;
+}
+.card input[type="text"],
+.card input[type="password"] {
+  border: 0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #2979ff;
+  padding: 14px 10px;
+  width: 200px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+}
+.card input[type="text"]:focus,
+.card input[type="password"]:focus {
+  width: 280px;
+  border-color: #00e676;
+}
+.card input[type="submit"] {
+  border: 0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #00e676;
+  padding: 14px 40px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+.card input[type="submit"]:focus {
+  background: #00e676;
+}
+.card input[type="submit"]:hover {
+  background: #00e676;
+}
+.card a {
+  color: #2979ff;
+}
+.card h4 {
+  color: white;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 </style>

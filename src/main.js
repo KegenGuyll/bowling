@@ -6,7 +6,11 @@ import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import firebase from 'firebase'
 import VueApexCharts from 'vue-apexcharts'
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
+
+Vue.use(Loading)
 Vue.use(VueApexCharts)
 Vue.component('apexchart', VueApexCharts)
 Vue.use(BootstrapVue);

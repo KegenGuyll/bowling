@@ -52,6 +52,16 @@
           </svg>
         </b-button>
       </b-card>
+      <b-modal id="basic" centered title="Basic" @ok="addBasicScore">
+        <b-form>
+          <b-form-input
+            class="spacer"
+            v-model="basicScore"
+            type="number"
+            placeholder="Enter your score"
+          ></b-form-input>
+        </b-form>
+      </b-modal>
     </b-container>
   </div>
 </template>

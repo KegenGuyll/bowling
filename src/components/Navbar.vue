@@ -11,8 +11,9 @@
               height="30"
               v-if="photoUrl != ''"
               v-bind:src="photoUrl"
+              style="margin-right:15px"
             />
-            <strong>Hello {{displayName}}</strong>
+            Hello {{displayName}}
           </b-nav-item>
           <b-nav-item v-if="isLoggedIn == true">
             <router-link style="color: rgba(255, 255, 255, 0.5);" to="/">Dashboard</router-link>
