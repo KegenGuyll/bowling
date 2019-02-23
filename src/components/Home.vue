@@ -1,7 +1,8 @@
 <template>
   <div>
-    <InfoCard :cardTitle="cardTitle" :cardContent="cardContent" class="spacer"></InfoCard>
-    <Graph class="spacer"></Graph>
+    <InfoCard :cardTitle="cardTitle" :cardContent="cardContent"></InfoCard>
+    <br>
+    <Graph></Graph>
   </div>
 </template>
 
@@ -21,8 +22,7 @@ export default {
   },
   components: {
     Graph: Graph,
-    InfoCard: InfoCard,
-    backarrow
+    InfoCard: InfoCard
   },
   created() {},
   methods: {}

@@ -60,13 +60,6 @@
             type="number"
             placeholder="Enter your score"
           ></b-form-input>
-          <!-- <b-form-file
-            accept="image/jpeg, image/png"
-            v-model="file"
-            :state="Boolean(file)"
-            placeholder="Choose a file..."
-          ></b-form-file>
-          <div class="mt-3">Selected file: {{file && file.name}}</div>-->
         </b-form>
       </b-modal>
     </b-container>

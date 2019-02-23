@@ -48,6 +48,9 @@ export default {
   data() {
     return {
       scores: [],
+      displayName: "",
+      email: "",
+      photoUrl: "",
       uid: "",
       isLoading: false,
       fullPage: true,
@@ -58,8 +61,17 @@ export default {
     };
   },
   created() {
-    const user = firebase.auth().currentUser;
-    this.uid = user.uid;
+    if (!this.$route.params.UserData) {
+      const user = firebase.auth().currentUser;
+      if (user != null) {
+        this.displayName = user.displayName;
+        this.email = user.email;
+        this.photoUrl = user.photoURL;
+        this.uid = user.uid;
+      }
+    } else {
+      this.User();
+    }
 
     this.isLoading = true;
     var docRef = db.collection("score-data").doc(this.uid);
@@ -86,6 +98,12 @@ export default {
   methods: {
     onCancel() {
       console.log("User cancelled the loader.");
+    },
+    User() {
+      this.displayName = this.$route.params.UserData.displayName;
+      this.email = this.$route.params.UserData.email;
+      this.photoUrl = this.$route.params.UserData.photoUrl;
+      this.uid = this.$route.params.UserData.uid;
     },
     clear() {
       setTimeout(() => {

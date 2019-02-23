@@ -15,54 +15,37 @@
           <h6 slot="header" class="mb-0" v-if="displayName != null">Profile View: {{displayName}}</h6>
           <h6 slot="header" class="mb-0" v-if="displayName == null">Profile View: {{email}}</h6>
           <div>
-            <b-row>
-              <b-col sm="3">
-                <label for="displayName">Display Name:</label>
-              </b-col>
-              <b-col sm="9">
-                <b-form-input
-                  id="displayName"
-                  v-model="displayName"
-                  type="text"
-                  placeholder="Enter your Name"
-                ></b-form-input>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col sm="3">
-                <label for="email">Email:</label>
-              </b-col>
-              <b-col sm="9">
-                <b-form-input
-                  disabled
-                  id="email"
-                  v-model="email"
-                  type="email"
-                  placeholder="Enter your Email.."
-                ></b-form-input>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col sm="3">
-                <label for="PhotoUrl">PhotoUrl:</label>
-              </b-col>
-              <b-col sm="9">
-                <b-form-input
-                  id="PhotoUrl"
-                  v-model="photoUrl"
-                  type="url"
-                  placeholder="Enter your Pic..."
-                ></b-form-input>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col sm="3">
-                <label for="uid">UID:</label>
-              </b-col>
-              <b-col sm="9">
-                <b-form-input disabled id="uid" v-model="uid" type="text" placeholder="User ID.."></b-form-input>
-              </b-col>
-            </b-row>
+            <b-input-group prepend="Name">
+              <b-form-input
+                id="displayName"
+                v-model="displayName"
+                type="text"
+                placeholder="Enter your Name"
+              ></b-form-input>
+            </b-input-group>
+            <br>
+            <b-input-group prepend="Email">
+              <b-form-input
+                disabled
+                id="email"
+                v-model="email"
+                type="email"
+                placeholder="Enter your Email.."
+              ></b-form-input>
+            </b-input-group>
+            <br>
+            <b-input-group prepend="PhotoUrl">
+              <b-form-input
+                id="PhotoUrl"
+                v-model="photoUrl"
+                type="url"
+                placeholder="Enter your Pic..."
+              ></b-form-input>
+            </b-input-group>
+            <br>
+            <b-input-group prepend="UID">
+              <b-form-input disabled id="uid" v-model="uid" type="text" placeholder="User ID.."></b-form-input>
+            </b-input-group>
           </div>
           <div slot="footer">
             <b-button v-on:click="updateUser" variant="success">Save</b-button>
@@ -95,18 +78,21 @@ export default {
     };
   },
   created() {
-    const user = firebase.auth().currentUser;
-
-    if (user != null) {
-      this.displayName = user.displayName;
-      this.email = user.email;
-      this.photoUrl = user.photoURL;
-      this.uid = user.uid;
+    if (!this.$route.params.UserData) {
+      const user = firebase.auth().currentUser;
+      if (user != null) {
+        this.displayName = user.displayName;
+        this.email = user.email;
+        this.photoUrl = user.photoURL;
+        this.uid = user.uid;
+      }
+    } else {
+      this.User();
     }
   },
   methods: {
     updateUser() {
-      var user = firebase.auth().currentUser;
+      const user = firebase.auth().currentUser;
       user
         .updateProfile({
           displayName: this.displayName,
@@ -119,6 +105,12 @@ export default {
           this.errorMessage = e;
         });
     },
+    User() {
+      this.displayName = this.$route.params.UserData.displayName;
+      this.email = this.$route.params.UserData.email;
+      this.photoUrl = this.$route.params.UserData.photoUrl;
+      this.uid = this.$route.params.UserData.uid;
+    },
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown;
     },
@@ -128,4 +120,3 @@ export default {
   }
 };
 </script>
-

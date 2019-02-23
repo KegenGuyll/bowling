@@ -13,19 +13,10 @@
       <b-col>
         <b-card
           style="background-color: #fff; color: #000000;"
-          title="Chance of Strike"
-          class="spacer"
-        >
-          <h5 class="card-text">{{strikes}}</h5>
-        </b-card>
-      </b-col>
-      <b-col>
-        <b-card
-          style="background-color: #fff; color: #000000;"
           title="Average Score"
           class="spacer"
         >
-          <h6>{{average}}</h6>
+          <h3>{{average}}</h3>
         </b-card>
       </b-col>
     </b-row>
@@ -87,8 +78,8 @@ export default {
       strikes: "N/A",
       totalPin: "N/A",
       user: "N/A",
-      name: "",
-      email: "",
+      name: "N/A",
+      email: "N/A",
       photoUrl: "",
       UID: "",
       options: {

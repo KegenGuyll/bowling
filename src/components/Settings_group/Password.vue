@@ -93,6 +93,8 @@ export default {
       newPassword: "",
       email: "",
       displayName: "",
+      photoUrl: "",
+      uid: "",
       success: false,
       successMessage: "",
       error: false,
@@ -100,11 +102,25 @@ export default {
     };
   },
   created() {
-    const user = firebase.auth().currentUser;
-    this.email = user.email;
-    this.displayName = user.displayName;
+    if (!this.$route.params.UserData) {
+      const user = firebase.auth().currentUser;
+      if (user != null) {
+        this.displayName = user.displayName;
+        this.email = user.email;
+        this.photoUrl = user.photoURL;
+        this.uid = user.uid;
+      }
+    } else {
+      this.User();
+    }
   },
   methods: {
+    User() {
+      this.displayName = this.$route.params.UserData.displayName;
+      this.email = this.$route.params.UserData.email;
+      this.photoUrl = this.$route.params.UserData.photoUrl;
+      this.uid = this.$route.params.UserData.uid;
+    },
     resetPassword() {
       firebase
         .auth()
