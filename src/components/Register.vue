@@ -19,7 +19,7 @@
             </b-card>
           </div>
         </b-col>
-      </b-row>
+      </b-row>n
     </b-container>
   </div>
 </template>
