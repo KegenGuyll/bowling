@@ -11,7 +11,7 @@
               </transition>
               <b-list-group-item :to="{name:'password',params:{UserData}}">Password</b-list-group-item>
               <b-list-group-item :to="{name:'score',params:{UserData}}">Scores</b-list-group-item>
-              <b-list-group-item to="settings/friend" v-b-modal.friends>Friends</b-list-group-item>
+              <b-list-group-item :to="{name: 'friend', params:{UserData}}">Friends</b-list-group-item>
               <b-list-group-item>Private Account
                 <switches
                   style="float: right; margin-top:8px"
@@ -21,6 +21,7 @@
                 ></switches>
               </b-list-group-item>
               <b-list-group-item href="#">Delete Account</b-list-group-item>
+              <b-list-group-item href="#" v-on:click="logout()">Logout</b-list-group-item>
             </b-list-group>
           </b-tab>
         </b-tabs>
@@ -61,7 +62,16 @@ export default {
       this.UserData.uid = user.uid;
     }
   },
-  methods: {}
+  methods: {
+    logout() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.go({ path: this.$router.path });
+        });
+    }
+  }
 };
 </script>
 
