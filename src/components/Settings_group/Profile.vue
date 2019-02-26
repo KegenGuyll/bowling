@@ -8,6 +8,7 @@
       @dismissed="dismissCountDown=0"
       @dismiss-count-down="countDownChanged"
     >Profile Updated Successfully.</b-alert>
+    <b-alert variant="danger" :show="error" dismissible>{{errorMessage}}</b-alert>
     <br>
     <b-container>
       <div>
@@ -74,7 +75,9 @@ export default {
       uid: "",
       dismissSecs: 3,
       dismissCountDown: 0,
-      showDismissibleAlert: false
+      showDismissibleAlert: false,
+      errorMessage: "",
+      error: false
     };
   },
   created() {
@@ -102,7 +105,8 @@ export default {
           this.showAlert();
         })
         .catch(e => {
-          this.errorMessage = e;
+          this.errorMessage = e.message;
+          this.error = true;
         });
     },
     User() {
