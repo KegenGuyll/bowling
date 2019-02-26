@@ -1,55 +1,39 @@
 <template>
   <b-container>
-    <b-row>
-      <b-col>
-        <Score/>
-      </b-col>
-    </b-row>
-    <b-card style="background-color: #3e6aff;
-    color: #fff;" title="Total Score">
+    <b-card style="color: #fff;" class="bottomBorderTotal black" title="Total Score">
       <h3 class="card-text">{{totalPin}}</h3>
     </b-card>
     <b-row>
       <b-col>
-        <b-card
-          style="background-color: #fff; color: #000000;"
-          title="Average Score"
-          class="spacer"
-        >
+        <b-card style="color: #fff;" title="Average Score" class="bottomBorderAverage black spacer">
           <h3>{{average}}</h3>
         </b-card>
       </b-col>
     </b-row>
     <b-row>
       <b-col>
-        <b-card title="High" style="background-color: #11d241;
-    color: white;">
+        <b-card title="High" class="bottomBorderHigh black" style="color: white;">
           <h5>{{high}}</h5>
         </b-card>
       </b-col>
       <b-col>
-        <b-card title="Low" style="background-color: #f40;
-    color: white;">
+        <b-card title="Low" class="bottomBorderLow black" style="color: white;">
           <h5>{{low}}</h5>
         </b-card>
       </b-col>
     </b-row>
     <b-row>
       <b-col>
-        <b-card style="background-color: #fff;" class="spacer">
+        <b-card style="color: #000000" class="bottomBorderGraph black spacer">
           <div>
             <apexchart type="area" :options="options" :series="series"></apexchart>
           </div>
         </b-card>
-        <b-card style="background-color: #3e6aff;
-    color: #fff;" class="spacer" title="User">
-          <h5>{{user}}</h5>
-        </b-card>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <Remove :data="data"></Remove>
+        <div style=" margin-top: 2vh; margin-bottom: 10vh;">
+          <b-card style="color: #fff;" class="bottomBorderUser black" title="User">
+            <h5>{{user}}</h5>
+          </b-card>
+        </div>
       </b-col>
     </b-row>
   </b-container>
@@ -94,12 +78,42 @@ export default {
             floating: false,
             style: {
               fontSize: "16px",
-              color: "#263238"
+              color: "#fff"
             }
           }
         },
+        dataLabels: {
+          enabled: false
+        },
+        grid: {
+          row: {
+            colors: ["#2a2a2c"]
+          },
+          column: {
+            colors: ["#2a2a2c"]
+          }
+        },
+        colors: ["#0190fb"],
         xaxis: {
-          categories: []
+          categories: [],
+          labels: {
+            show: true,
+            style: {
+              colors: "#fff",
+              fontSize: "14px",
+              fontFamily: "sans-serif"
+            }
+          }
+        },
+        yaxis: {
+          labels: {
+            show: true,
+            style: {
+              color: "#fff",
+              fontSize: "14px",
+              fontFamily: "sans-serif"
+            }
+          }
         }
       },
       series: [
@@ -160,18 +174,38 @@ export default {
           this.average = Math.round(this.totalPin / this.scores.length);
         })
         .then(() => {
-          db.collection("users")
-            .doc(uid)
-            .update({
-              name: this.name,
-              email: this.email,
-              photoUrl: this.photoUrl,
-              uid: this.UID,
-              totalScore: this.totalPin,
-              average: this.average,
-              high: this.high,
-              low: this.low
-            });
+          var docRef = db.collection("users").doc(uid);
+
+          docRef.get().then(doc => {
+            if (doc.exists) {
+              db.collection("users")
+                .doc(uid)
+                .update({
+                  name: this.name,
+                  email: this.email,
+                  photoUrl: this.photoUrl,
+                  uid: this.UID,
+                  totalScore: this.totalPin,
+                  average: this.average,
+                  high: this.high,
+                  low: this.low
+                });
+            } else {
+              db.collection("users")
+                .doc(uid)
+                .set({
+                  name: this.name,
+                  email: this.email,
+                  photoUrl: this.photoUrl,
+                  uid: this.UID,
+                  totalScore: this.totalPin,
+                  average: this.average,
+                  high: this.high,
+                  low: this.low,
+                  friends: []
+                });
+            }
+          });
         })
         .catch(error => {
           console.log("Error: ", error);
@@ -180,3 +214,38 @@ export default {
   }
 };
 </script>
+
+<style>
+.spacer {
+  margin: 15px 2px;
+}
+
+.bottomBorderHigh {
+  border-bottom: 5px solid #11d241;
+  border-radius: 5px;
+}
+.bottomBorderLow {
+  border-bottom: 5px solid #f40;
+  border-radius: 5px;
+}
+.bottomBorderTotal {
+  border-bottom: 5px solid #6e0dd0;
+  border-radius: 5px;
+}
+.bottomBorderUser {
+  border-bottom: 5px solid #fd1c03;
+  border-radius: 5px;
+}
+.bottomBorderAverage {
+  border-bottom: 5px solid #f2ea02;
+  border-radius: 5px;
+}
+.bottomBorderGraph {
+  border-bottom: 5px solid #0190fb;
+  border-radius: 5px;
+}
+
+.black {
+  background-color: #2a2a2c;
+}
+</style>

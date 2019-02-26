@@ -39,7 +39,11 @@
           </b-list-group>
         </b-media>
         <br>
-        <b-button variant="outline-success">Add Friend</b-button>
+        <b-button
+          v-bind:disabled="alreadyFriend"
+          variant="outline-success"
+          v-on:click="addFriend(show.uid)"
+        >Add Friend</b-button>
       </b-card>
     </b-container>
   </div>
@@ -49,6 +53,7 @@
 <script>
 import backarrow from "./Backarrow.vue";
 import db from "../../../firebaseInit.js";
+import firebase from "firebase";
 
 export default {
   name: "friends",
@@ -57,15 +62,33 @@ export default {
       search: "",
       users: [],
       show: "",
-      showAll: false
+      showAll: false,
+      UserUid: "",
+      displayName: "",
+      email: "",
+      photoUrl: "",
+      alreadyFriend: false,
+      friends: []
     };
   },
   components: {
     backarrow
   },
   created() {
-    var docRef = db.collection("users");
+    if (!this.$route.params.UserData) {
+      const user = firebase.auth().currentUser;
 
+      if (user != null) {
+        this.displayName = user.displayName;
+        this.email = user.email;
+        this.photoUrl = user.photoURL;
+        this.Useruid = user.uid;
+        this.searchFriend(user.uid);
+      }
+    } else {
+      this.User();
+    }
+    const docRef = db.collection("users");
     docRef.get().then(querySnapshot => {
       querySnapshot.forEach(doc => {
         this.users.push(doc.data());
@@ -81,8 +104,6 @@ export default {
         this.show = resultObject;
         this.showAll = false;
       }
-
-      //const result = this.users.filter(word => word === text);
     },
     sort(nameKey, myArray) {
       for (var i = 0; i < myArray.length; i++) {
@@ -90,6 +111,28 @@ export default {
           return myArray[i];
         }
       }
+    },
+    addFriend(uid) {
+      db.collection("users")
+        .doc(this.Useruid)
+        .update({
+          friends: firebase.firestore.FieldValue.arrayUnion(uid)
+        });
+    },
+    User() {
+      this.displayName = this.$route.params.UserData.displayName;
+      this.email = this.$route.params.UserData.email;
+      this.photoUrl = this.$route.params.UserData.photoUrl;
+      this.Useruid = this.$route.params.UserData.uid;
+      this.searchFriend(this.$route.params.UserData.uid);
+    },
+    searchFriend(uid) {
+      const docRef = db.collection("users").doc(uid);
+      docRef.get().then(doc => {
+        if (doc.exists) {
+          this.friends = doc.data().friends;
+        }
+      });
     }
   }
 };

@@ -8,8 +8,12 @@ import firebase from 'firebase'
 import VueApexCharts from 'vue-apexcharts'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import VueAnalytics from 'vue-analytics'
 
-
+Vue.use(VueAnalytics, {
+  id: 'UA-64521211-3',
+  router
+})
 Vue.use(Loading)
 Vue.use(VueApexCharts)
 Vue.component('apexchart', VueApexCharts)

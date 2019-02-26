@@ -51,3 +51,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.navbar {
+  background-color: black;
+}
+</style>

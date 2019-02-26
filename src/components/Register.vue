@@ -19,7 +19,7 @@
             </b-card>
           </div>
         </b-col>
-      </b-row>
+      </b-row>n
     </b-container>
   </div>
 </template>
@@ -63,7 +63,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .card {
   background: #222527;
   text-align: center;

@@ -1,28 +1,22 @@
 <template>
   <div>
-    <InfoCard :cardTitle="cardTitle" :cardContent="cardContent"></InfoCard>
     <br>
-    <Graph></Graph>
+    <Graph/>
   </div>
 </template>
 
 <script>
-import InfoCard from "./InfoCard";
 import Graph from "./Graph.vue";
-import backarrow from "../components/Settings_group/Backarrow";
 import db from "../../firebaseInit.js";
 import firebase from "firebase";
+
 export default {
   name: "Home",
   data() {
-    return {
-      cardTitle: "",
-      cardContent: ""
-    };
+    return {};
   },
   components: {
-    Graph: Graph,
-    InfoCard: InfoCard
+    Graph: Graph
   },
   created() {},
   methods: {}
@@ -30,8 +24,4 @@ export default {
 </script>
 
 <style>
-.spacer {
-  margin-top: 2vh;
-  margin-bottom: 2vh;
-}
 </style>
