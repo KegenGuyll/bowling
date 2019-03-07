@@ -27,15 +27,15 @@
           </b-collapse>
         </b-list-group-item>
       </div>
-      <b-card v-if="show != ''">
+      <b-card class="black bottomBorder" v-if="show != ''">
         <b-media vertical-align="center">
           <h5 class="mt-0 mb-1">{{show.name}}</h5>
           <b-list-group>
-            <b-list-group-item href="#">Email - {{show.email}}</b-list-group-item>
-            <b-list-group-item href="#">Total Scores - {{show.totalScore}}</b-list-group-item>
-            <b-list-group-item href="#">Average - {{show.average}}</b-list-group-item>
-            <b-list-group-item href="#">High - {{show.high}}</b-list-group-item>
-            <b-list-group-item href="#">Low - {{show.low}}</b-list-group-item>
+            <b-list-group-item class="black" href="#">Email - {{show.email}}</b-list-group-item>
+            <b-list-group-item class="black" href="#">Total Scores - {{show.totalScore}}</b-list-group-item>
+            <b-list-group-item class="black" href="#">Average - {{show.average}}</b-list-group-item>
+            <b-list-group-item class="black" href="#">High - {{show.high}}</b-list-group-item>
+            <b-list-group-item class="black" href="#">Low - {{show.low}}</b-list-group-item>
           </b-list-group>
         </b-media>
         <br>
@@ -137,3 +137,22 @@ export default {
   }
 };
 </script>
+
+<style>
+.bottomBorder {
+  border-bottom: 5px solid #28a745;
+  border-radius: 5px;
+}
+
+.black {
+  background-color: #2a2a2c;
+  color: #ffffff;
+  text-align: center;
+}
+
+.list-group-item-action:hover {
+  background-color: #3b3b3d;
+  color: #ffffff;
+  text-align: center;
+}
+</style>

@@ -2,17 +2,15 @@
   <div class="justify-content-md-center">
     <b-container>
       <br>
-      <b-card no-body>
+      <b-card class="black bottomBorder" no-body>
         <b-tabs pills card>
           <b-tab title="Account" active>
             <b-list-group flush>
-              <transition name="slide">
-                <b-list-group-item :to="{name:'profile',params:{UserData}}">Profile</b-list-group-item>
-              </transition>
-              <b-list-group-item :to="{name:'password',params:{UserData}}">Password</b-list-group-item>
-              <b-list-group-item :to="{name:'score',params:{UserData}}">Scores</b-list-group-item>
-              <b-list-group-item :to="{name: 'friend', params:{UserData}}">Friends</b-list-group-item>
-              <b-list-group-item>Private Account
+              <b-list-group-item class="black" :to="{name:'profile',params:{UserData}}">Profile</b-list-group-item>
+              <b-list-group-item class="black" :to="{name:'password',params:{UserData}}">Password</b-list-group-item>
+              <b-list-group-item class="black" :to="{name:'score',params:{UserData}}">Scores</b-list-group-item>
+              <b-list-group-item class="black" :to="{name: 'friend', params:{UserData}}">Friends</b-list-group-item>
+              <b-list-group-item class="black">Private Account
                 <switches
                   style="float: right; margin-top:8px"
                   theme="bootstrap"
@@ -20,8 +18,8 @@
                   v-model="enabled"
                 ></switches>
               </b-list-group-item>
-              <b-list-group-item href="#">Delete Account</b-list-group-item>
-              <b-list-group-item href="#" v-on:click="logout()">Logout</b-list-group-item>
+              <b-list-group-item class="black" href="#">Delete Account</b-list-group-item>
+              <b-list-group-item class="black" href="#" v-on:click="logout()">Logout</b-list-group-item>
             </b-list-group>
           </b-tab>
         </b-tabs>
@@ -75,9 +73,19 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .error {
   font-weight: bold;
   color: red;
+}
+
+.bottomBorder {
+  border-bottom: 5px solid #007bff;
+  border-radius: 5px;
+}
+
+.black {
+  background-color: #2a2a2c;
+  color: #ffffff;
 }
 </style>

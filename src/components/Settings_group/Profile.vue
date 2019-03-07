@@ -12,12 +12,13 @@
     <br>
     <b-container>
       <div>
-        <b-card header-tag="header" footer="Card Footer">
+        <b-card class="black bottomBorder" header-tag="header" footer="Card Footer">
           <h6 slot="header" class="mb-0" v-if="displayName != null">Profile View: {{displayName}}</h6>
           <h6 slot="header" class="mb-0" v-if="displayName == null">Profile View: {{email}}</h6>
           <div>
             <b-input-group prepend="Name">
               <b-form-input
+                class="form"
                 id="displayName"
                 v-model="displayName"
                 type="text"
@@ -25,28 +26,41 @@
               ></b-form-input>
             </b-input-group>
             <br>
-            <b-input-group prepend="Email">
-              <b-form-input
-                disabled
-                id="email"
-                v-model="email"
-                type="email"
-                placeholder="Enter your Email.."
-              ></b-form-input>
-            </b-input-group>
+            <div v-on:click="toaster('Email')">
+              <b-input-group prepend="Email">
+                <b-form-input
+                  disabled
+                  class="form-disabled"
+                  id="email"
+                  v-model="email"
+                  type="email"
+                  placeholder="Enter your Email.."
+                ></b-form-input>
+              </b-input-group>
+            </div>
             <br>
             <b-input-group prepend="PhotoUrl">
               <b-form-input
                 id="PhotoUrl"
+                class="form"
                 v-model="photoUrl"
                 type="url"
                 placeholder="Enter your Pic..."
               ></b-form-input>
             </b-input-group>
             <br>
-            <b-input-group prepend="UID">
-              <b-form-input disabled id="uid" v-model="uid" type="text" placeholder="User ID.."></b-form-input>
-            </b-input-group>
+            <div v-on:click="toaster('UID')">
+              <b-input-group prepend="UID">
+                <b-form-input
+                  class="form-disabled"
+                  disabled
+                  id="uid"
+                  v-model="uid"
+                  type="text"
+                  placeholder="User ID.."
+                ></b-form-input>
+              </b-input-group>
+            </div>
           </div>
           <div slot="footer">
             <b-button v-on:click="updateUser" variant="success">Save</b-button>
@@ -94,6 +108,9 @@ export default {
     }
   },
   methods: {
+    toaster(data) {
+      this.$toaster.error(`${data} is not a editable field`);
+    },
     updateUser() {
       const user = firebase.auth().currentUser;
       user
@@ -124,3 +141,40 @@ export default {
   }
 };
 </script>
+
+<style scope>
+.bottomBorder {
+  border-bottom: 5px solid #28a745;
+  border-radius: 5px;
+}
+
+.black {
+  background-color: #2a2a2c;
+  color: #ffffff;
+}
+
+.form {
+  background-color: #313131;
+  color: #ffffff;
+  border: 1px solid #2a2a2c;
+}
+
+.form:focus {
+  background-color: #313131;
+  color: #ffffff;
+  border: 1px solid #2a2a2c;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 10px #b6b6b6;
+}
+
+.form-control:disabled {
+  background-color: #313131;
+  color: #808080;
+  border: 1px solid #2a2a2c;
+}
+
+.input-group-text {
+  background-color: #313131;
+  color: #ffffff;
+  border: 1px solid #2a2a2c;
+}
+</style>
