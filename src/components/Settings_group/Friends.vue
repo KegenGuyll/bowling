@@ -138,7 +138,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .bottomBorder {
   border-bottom: 5px solid #28a745;
   border-radius: 5px;
