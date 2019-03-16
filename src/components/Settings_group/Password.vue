@@ -11,7 +11,7 @@
     <b-alert variant="danger" dismissible :show="error" @dismissed="error=false">{{errorMessage}}</b-alert>
     <br>
     <b-container>
-      <b-card header-tag="header" footer="Card Footer">
+      <b-card class="black bottomBorder" header-tag="header" footer="Card Footer">
         <h6 slot="header" class="mb-0" v-if="displayName != null">Password Change: {{displayName}}</h6>
         <h6 slot="header" class="mb-0" v-if="displayName == null">Password Change: {{email}}</h6>
         <b-form>
@@ -19,7 +19,7 @@
             <b-col>
               <b-form-input
                 id="currentPassword"
-                class="bottom-input"
+                class="bottom-input form"
                 type="password"
                 required
                 placeholder="Current Password"
@@ -32,7 +32,7 @@
             <b-col>
               <b-form-input
                 id="newPassword"
-                class="bottom-input"
+                class="bottom-input form"
                 type="password"
                 required
                 placeholder="New Password"
@@ -45,7 +45,7 @@
             <b-col>
               <b-form-input
                 id="repeatPassword"
-                class="bottom-input"
+                class="bottom-input form"
                 type="password"
                 required
                 placeholder="Repeat New Password"
@@ -72,6 +72,7 @@
             variant="success"
           >Change Password</b-button>
         </div>
+        <br>
       </b-card>
     </b-container>
   </div>
@@ -193,3 +194,39 @@ export default {
 };
 </script>
 
+<style scoped>
+.bottomBorder {
+  border-bottom: 5px solid #28a745;
+  border-radius: 5px;
+}
+
+.black {
+  background-color: #2a2a2c;
+  color: #ffffff;
+}
+
+.form {
+  background-color: #313131;
+  color: #ffffff;
+  border: 1px solid #2a2a2c;
+}
+
+.form:focus {
+  background-color: #313131;
+  color: #ffffff;
+  border: 1px solid #2a2a2c;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 10px #b6b6b6;
+}
+
+.form-control:disabled {
+  background-color: #313131;
+  color: #808080;
+  border: 1px solid #2a2a2c;
+}
+
+.input-group-text {
+  background-color: #313131;
+  color: #ffffff;
+  border: 1px solid #2a2a2c;
+}
+</style>

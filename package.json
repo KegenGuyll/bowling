@@ -15,6 +15,7 @@
     "firebase": "^5.7.2",
     "fusioncharts": "^3.13.3-sr.1",
     "qrcode.vue": "^1.6.1",
+    "v-toaster": "^1.0.3",
     "vue": "^2.5.2",
     "vue-analytics": "^5.16.2",
     "vue-apexcharts": "^1.2.7",

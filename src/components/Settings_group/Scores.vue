@@ -22,7 +22,7 @@
           v-for="score in scores"
           v-bind:key="score.contentID"
           href="#"
-          class="d-flex justify-content-between align-items-center"
+          class="d-flex justify-content-between align-items-center form"
         >
           {{score.y}}
           <b-badge variant="primary" pill>{{score.x}}</b-badge>
@@ -125,3 +125,10 @@ export default {
 };
 </script>
 
+<style>
+.form {
+  background-color: #313131;
+  color: #ffffff;
+  border: 1px solid #2a2a2c;
+}
+</style>
